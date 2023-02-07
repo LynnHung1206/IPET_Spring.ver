@@ -1,0 +1,12 @@
+/build/
+/target/
+/.settings/
+/lib/
+.classpath
+.project
+/bin/
+src/main/webapp/META-INF/context.xml
+# Intellij
+.idea/
+*.iml
+*.iws
