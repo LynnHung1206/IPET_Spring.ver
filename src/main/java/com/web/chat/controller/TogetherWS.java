@@ -1,5 +1,4 @@
-package idv.david.websocketchat.controller;
-
+package com.web.chat.controller;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;

@@ -172,8 +172,6 @@ td.details-control {
                     tr.addClass('shown');
                 }
             });
-            // document.getElementsByClassName('details-control').item(0).innerHTML =
-            //     `<img src="plus.jpg" width="25px" >`;
         });
     </script>
 </body>
