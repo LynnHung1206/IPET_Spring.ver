@@ -65,15 +65,6 @@
 			<section class="content-header">
 				<div class="container-fluid">
 
-					<%-- 錯誤表列 --%>
-					<c:if test="${not empty errorMsgs}">
-						<font style="color: red">請修正以下錯誤:</font>
-						<ul>
-							<c:forEach var="message" items="${errorMsgs}">
-								<li style="color: red">${message}</li>
-							</c:forEach>
-						</ul>
-					</c:if>
 
 					<form
 						action="${pageContext.request.contextPath}/ipet-back/staff/edit"
@@ -84,34 +75,34 @@
 								<td><label>姓名:</label></td>
 								<td><input type="text" name="sname"
 									pattern="[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}"
-									value="<%=staff.getName()%>" required></td>
+									value="${staff.getName()}" required></td>
 							</tr>
 
 							<tr>
 								<td><label>身分證字號:</label></td>
-								<td><input type="text" name="uid"
-									value="<%=staff.getUid()%>" required></td>
+								<td><input type="text" name="uid" value="${staff.getUid()}"
+									required></td>
 							</tr>
 							<tr>
 								<td><label>生日:</label></td>
 								<td><input type="date" name="birth"
-									value="<%=staff.getBth()%>"
-									style="background-color: lightgray;" readonly required></td>
+									value="${staff.getBth()}" style="background-color: lightgray;"
+									readonly required></td>
 							</tr>
 							<tr>
 								<td>性別:</td>
 								<td><label for="girl"><input type="radio"
-										name="sex" value="<%=staff.getSex()%>" checked><%=staff.getSex()%></label></td>
+										name="sex" value="${staff.getSex()}" checked>${staff.getSex()}</label></td>
 							</tr>
 							<tr>
 								<td><label>Email:</label></td>
 								<td><input type="email" name="email"
-									value="<%=staff.getEmail()%>" required></td>
+									value="${staff.getEmail()}" required></td>
 							</tr>
 							<tr>
 								<td><label>手機:</label></td>
 								<td><input type="tel" name="phone"
-									value="<%=staff.getPhone()%>" required></td>
+									value="${staff.getPhone()}" required></td>
 							</tr>
 							<tr>
 								<td><label>市內電話:</label></td>
@@ -121,18 +112,18 @@
 							<tr>
 								<td><label>地址:</label></td>
 								<td><input type="text" name="address"
-									value="<%=staff.getAdd()%>" required></td>
+									value="${staff.getAdd()}" required></td>
 							</tr>
 							<tr>
 								<td><label>帳號:</label></td>
 								<td><input type="text" name="acount"
-									value="<%=staff.getAc()%>" style="background-color: lightgray;"
+									value="${staff.getAc()}" style="background-color: lightgray;"
 									readonly required></td>
 							</tr>
 							<tr>
 								<td><label>密碼:</label></td>
 								<td><input type="password" name="password"
-									value="<%=staff.getPw()%>" required></td>
+									value="${staff.getPw()}" required></td>
 							</tr>
 							<tr>
 								<td><label> 職稱: </label></td>
@@ -149,8 +140,6 @@
 											${staff.getPosi()== "一般人員"? 'selected':''}>一般人員</option>
 								</select></td>
 							<tr>
-								<jsp:useBean id="staffSvc" scope="page"
-									class="com.web.staff.model.service.impl.StaffServiceImpl" />
 								<td><label>狀態:</label></td>
 								<td><select name="status">
 										<option value="0" ${staff.getStatus() == 0 ?'selected':''}>在職</option>
@@ -158,22 +147,20 @@
 								</select></td>
 							</tr>
 							<tr>
-								<jsp:useBean id="adminFuncSvc" scope="page"
-									class="com.web.admin.model.service.impl.AdminFuncServiceImpl" />
 								<td><label>權限:</label></td>
-								<td><c:forEach var="adminFunc"
-										items="${adminFuncSvc.getAll()}">
-										<label for="${adminFunc.getId()}" style="font-size: 10px;"><input
-											type="radio" name="admin" id="${adminFunc.getId()}"
+								<td><c:forEach var="adminFunc" items="${adminFunc}">
+										<label for="${adminFunc.getId()}" style="font-size: 10px;">
+											<input type="radio" name="admin" id="${adminFunc.getId()}"
 											value="${adminFunc.getId()}
 											"
 											${adminFunc.getId() == admin.getAdminID()? 'checked':''}>
-											${adminFunc.getName()}</label>
+											${adminFunc.getName()}
+										</label>
 									</c:forEach></td>
 							</tr>
 							<tr>
 								<td><input type="hidden" name="action" value="update">
-									<input type="hidden" name="staffId" value="<%=staff.getId()%> "></td>
+									<input type="hidden" name="staffId" value="${staff.getId()} "></td>
 								<td><input type="submit" value="送出修改" onclick="enter()"></td>
 							</tr>
 						</table>

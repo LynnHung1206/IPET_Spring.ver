@@ -100,10 +100,7 @@ input#addNew:hover, #search:hover {
 								<td>修改</td>
 							</tr>
 
-							<%@ include file="page1.file"%>
-							<c:forEach var="staffVO" items="${list}" begin="<%=pageIndex%>"
-								end="<%=pageIndex+rowsPerPage-1%>">
-
+							<c:forEach var="staffVO" items="${list}">
 								<tr>
 									<td>${staffVO.id}</td>
 									<td>${staffVO.name}</td>
@@ -136,7 +133,6 @@ input#addNew:hover, #search:hover {
 							</c:forEach>
 						</table>
 						<div class="col-sm-6">
-							<%@ include file="page2.file"%>
 
 						</div>
 					</div>

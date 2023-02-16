@@ -2,7 +2,6 @@ package com.web.staff.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,13 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import com.core.util.CommonUtil;
 import com.web.admin.model.entity.Admin;
+import com.web.admin.model.entity.AdminFunc;
+import com.web.admin.model.service.AdminFuncService;
 import com.web.admin.model.service.AdminService;
-import com.web.admin.model.service.impl.AdminServiceImpl;
 import com.web.staff.model.entity.Staff;
 import com.web.staff.model.service.StaffService;
-import com.web.staff.model.service.impl.StaffServiceImpl;
 
 @WebServlet({ "/ipet-back/staff/allStaffList", "/ipet-back/staff/edit", "/ipet-back/staff/addNew",
 		"/ipet-back/staff/getAllList", "/ipet-back/staff/checkAc", "/ipet-back/staff/checkStatus" })
@@ -28,12 +28,14 @@ public class StaffServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private StaffService service;
 	private AdminService adminSvc;
+	private AdminFuncService adminFuncSvc;
 	
 	@Override
 	public void init() throws ServletException {
 		CommonUtil.printBean(getServletContext());
 		service = CommonUtil.getBean(getServletContext(), StaffService.class);
 		adminSvc=CommonUtil.getBean(getServletContext(), AdminService.class);
+		adminFuncSvc = CommonUtil.getBean(getServletContext(), AdminFuncService.class);
 	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -48,6 +50,8 @@ public class StaffServlet extends HttpServlet {
 			req.getRequestDispatcher("/templates/backstage/staff/staffList.jsp").forward(req, res);
 		}
 		if ("/ipet-back/staff/addNew".equals(path)) {
+			List<AdminFunc> adminFunc = adminFuncSvc.getAll();
+			req.setAttribute("adminFunc", adminFunc);
 			req.getRequestDispatcher("/templates/backstage/staff/register.jsp").forward(req, res);
 		}
 		if ("/ipet-back/staff/getAllList".equals(path)) {
@@ -70,9 +74,12 @@ public class StaffServlet extends HttpServlet {
 
 			Admin admin = adminSvc.getOneAdminByInt(staffId);
 			Staff staff = service.getStaff(staffId);
+//			List<Admin> adminList = adminSvc.getAll();
+			List<AdminFunc> adminFunc = adminFuncSvc.getAll();
 
 			req.setAttribute("admin", admin);
 			req.setAttribute("staff", staff);
+			req.setAttribute("adminFunc", adminFunc);
 
 			req.getRequestDispatcher("/templates/backstage/staff/update.jsp").forward(req, res);
 		}
@@ -134,9 +141,12 @@ public class StaffServlet extends HttpServlet {
 		admin.setAdminID(adminid);
 		adminSvc.update(admin);
 //			轉交
-		String url = "/templates/backstage/staff/staffList.jsp";
-		RequestDispatcher successView = req.getRequestDispatcher(url);
-		successView.forward(req, res);
+		List<Staff> list = service.getAll();
+		req.setAttribute("list", list);
+		
+		List<Admin> allAdmin = adminSvc.getAll();
+		req.setAttribute("adminvo", allAdmin);
+		req.getRequestDispatcher("/templates/backstage/staff/staffList.jsp").forward(req, res);
 	}
 
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -183,6 +193,11 @@ public class StaffServlet extends HttpServlet {
 		adminSvc.addAdminOnStaff(adminInt, staffid);
 
 //			轉交
+		List<Staff> list = service.getAll();
+		req.setAttribute("list", list);
+		
+		List<Admin> allAdmin = adminSvc.getAll();
+		req.setAttribute("adminvo", allAdmin);
 		req.getRequestDispatcher("/templates/backstage/staff/staffList.jsp").forward(req, res);
 	}
 

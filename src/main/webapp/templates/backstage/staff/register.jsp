@@ -161,11 +161,9 @@ input#allStaff:hover, #search:hover {
 									</select></td>
 								</tr>
 								<tr>
-									<jsp:useBean id="adminFuncSvc" scope="page"
-										class="com.web.admin.model.service.impl.AdminFuncServiceImpl" />
 									<td><label>權限:</label></td>
 									<td><c:forEach var="adminFunc"
-											items="${adminFuncSvc.getAll()}">
+											items="${adminFunc}">
 											<label for="${adminFunc.getId()}" style="font-size: 10px;"><input
 												type="radio" name="admin" id="${adminFunc.getId()}"
 												value="${adminFunc.getId()} ">

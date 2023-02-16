@@ -2,13 +2,12 @@ package com.web.admin.model.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web.admin.model.dao.AdminFuncDAO;
-import com.web.admin.model.dao.impl.*;
 import com.web.admin.model.entity.AdminFunc;
 import com.web.admin.model.service.AdminFuncService;
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web.admin.model.dao.AdminDAO;
 import com.web.admin.model.dao.impl.AdminDAOImpl;
@@ -15,7 +16,7 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private AdminDAO dao;
 
-
+	@Transactional
 	@Override
 	public Admin addAdminOnStaff(Integer adminId, Integer staffId) {
 
@@ -46,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
 	public List<Admin.PK> getPk(Integer staffId) {
 		return ((AdminDAOImpl) dao).getPk(staffId);
 	}
-	
+	@Transactional
 	@Override
 	public void update(Admin admin) {
 		dao.update(admin);
