@@ -16,6 +16,8 @@ import com.core.util.CommonUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.web.admin.model.entity.Admin;
+import com.web.admin.model.service.AdminService;
 import com.web.staff.model.entity.Staff;
 import com.web.staff.model.service.StaffService;
 import com.web.staff.model.service.impl.StaffServiceImpl;
@@ -25,11 +27,13 @@ public class StaffLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private StaffService service;
+	private AdminService adminSvc;
 
 	@Override
 	public void init() throws ServletException {
 		CommonUtil.printBean(getServletContext());
 		service = CommonUtil.getBean(getServletContext(), StaffService.class);
+		adminSvc = CommonUtil.getBean(getServletContext(), AdminService.class);
 	}
 
 	@Override
@@ -45,8 +49,17 @@ public class StaffLoginServlet extends HttpServlet {
 			turnToJson(resp, staff);
 			return;
 		}
-//		StaffService staffSvc = new StaffServiceImpl();
 		staff = service.login(staff);
+		
+		if(staff.getStatus() == 1) {
+			staff.setMessage("此帳號已被停權");
+			staff.setSuccessful(false);
+			turnToJson(resp, staff);
+			return ;
+		}
+		
+		
+		
 		if (staff.isSuccessful()) {
 			if (req.getSession(false) != null) {
 				req.changeSessionId();
@@ -56,6 +69,9 @@ public class StaffLoginServlet extends HttpServlet {
 			session.setAttribute("staff", staff);
 			session.setAttribute("name", staff.getName());
 			session.setAttribute("id", staff.getId());
+			Admin admin = new Admin();
+			admin = adminSvc.getOneAdminByInt(staff.getId());
+			session.setAttribute("adminId", admin.getAdminID());
 		}
 		turnToJson(resp, staff);
 	}
